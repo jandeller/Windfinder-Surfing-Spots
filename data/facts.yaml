@@ -22,7 +22,7 @@ datasets:
         count: int32
 
     weather_kiel:
-      descr: "St. Peter Ording - weather 2019"
+      descr: "Kiel - weather 2019"
       path: "raw/_weather_data_10044N_2016-2019.csv"
       hash: 
       editable: yes
@@ -36,8 +36,8 @@ datasets:
 
 
     pageviews_kiel:
-      descr: "Str. Peter Ording - page views 2019"
-      path: "raw/_pageviews_10044N_2016-2019.csv"
+      descr: "Kiel - page views 2019"
+      path: "raw/_pageviews__data_10044N_2016-2019.csv"
       sep: ';'
       astypes:
         date: datetime64

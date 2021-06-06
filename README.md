@@ -21,9 +21,13 @@ pip install -r requirements.txt
 ```
 
 ### Data Sets
-
-
-
+Build Data
+```shell
+./concat.sh
+```
+```shell
+./merge_data.py
+```
 ## Content
 ### `notebooks`
 #### `0maximum_views`
