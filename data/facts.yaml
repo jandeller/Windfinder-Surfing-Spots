@@ -1,0 +1,68 @@
+datasets:
+    weather_st.peter.ording:
+      descr: "St. Peter Ording - weather 2019"
+      path: "raw/_weatherdata_10028_2016-2019.csv"
+      hash:
+      editable: yes
+      sep: ';'
+      astypes:
+        date: datetime64
+        wind_speed: float
+        wind_direction: float
+        wind_gust: float
+        temp: float
+
+
+    pageviews_st.peter.ording:
+      descr: "Str. Peter Ording - page views 2019"
+      path: "raw/_pageviews_10028_2016-2019.csv"
+      sep: ';'
+      astypes:
+        date: datetime64
+        count: int32
+
+    weather_kiel:
+      descr: "St. Peter Ording - weather 2019"
+      path: "raw/_weatherdata_10044N_2016-2019.csv"
+      hash:
+      editable: yes
+      sep: ';'
+      astypes:
+        date: datetime64
+        wind_speed: float
+        wind_direction: float
+        wind_gust: float
+        temp: float
+
+
+    pageviews_kiel:
+      descr: "Str. Peter Ording - page views 2019"
+      path: "raw/pageviews_10044N_2016-2019.csv"
+      sep: ';'
+      astypes:
+        date: datetime64
+        count: int32
+
+    main_st.peter.ording:
+      descr:
+      path: "main_st.peter.ording.csv"
+      sep: ','
+      astypes:
+        date: datetime64
+        wind_speed: float
+        wind_direction: float
+        wind_gust: float
+        temp: float
+        count: int32
+
+    main_kiel:
+      descr:
+      path: "merged_kiel.csv"
+      sep: ','
+      astypes:
+        date: datetime64
+        wind_speed: float
+        wind_direction: float
+        wind_gust: float
+        temp: float
+        count: int32
