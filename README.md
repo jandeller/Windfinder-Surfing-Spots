@@ -7,6 +7,15 @@ Project from Windfinder.
 
 ### Virtual Environment
 
+Setting up a virtual environment.
+
+```shell
+virtualenv -p python3 venv
+source venv/bin/activate
+```
+
+Install projects requirements.
+
 ```shell
 pip install -r requirements.txt
 ```
