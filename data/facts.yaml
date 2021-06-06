@@ -1,7 +1,7 @@
 datasets:
     weather_st.peter.ording:
       descr: "St. Peter Ording - weather 2019"
-      path: "raw/_weatherdata_10028_2016-2019.csv"
+      path: "raw/_weather_data_10028_2016-2019.csv"
       hash:
       editable: yes
       sep: ';'
@@ -15,7 +15,7 @@ datasets:
 
     pageviews_st.peter.ording:
       descr: "Str. Peter Ording - page views 2019"
-      path: "raw/_pageviews_10028_2016-2019.csv"
+      path: "raw/_pageviews_data_10028_2016-2019.csv"
       sep: ';'
       astypes:
         date: datetime64
@@ -23,8 +23,8 @@ datasets:
 
     weather_kiel:
       descr: "St. Peter Ording - weather 2019"
-      path: "raw/_weatherdata_10044N_2016-2019.csv"
-      hash:
+      path: "raw/_weather_data_10044N_2016-2019.csv"
+      hash: 
       editable: yes
       sep: ';'
       astypes:
@@ -37,7 +37,7 @@ datasets:
 
     pageviews_kiel:
       descr: "Str. Peter Ording - page views 2019"
-      path: "raw/pageviews_10044N_2016-2019.csv"
+      path: "raw/_pageviews_10044N_2016-2019.csv"
       sep: ';'
       astypes:
         date: datetime64
@@ -57,7 +57,7 @@ datasets:
 
     main_kiel:
       descr:
-      path: "merged_kiel.csv"
+      path: "main_kiel.csv"
       sep: ','
       astypes:
         date: datetime64
