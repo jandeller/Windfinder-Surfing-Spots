@@ -1,0 +1,1291 @@
+---
+title: "Surfing"
+author: "Benjamin Müller"
+date: "4 6 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r load data}
+
+library(readr)
+library(lubridate)
+
+pageviews_06058_2016 <- read_delim("C:/Users/Benny/Desktop/Prediction-of-Surfing-Conditions/pageviews_06058_2016.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+
+colnames(pageviews_06058_2016) <- c("Date", "number")
+
+pageviews_06058_2016$Date <-  ymd(pageviews_06058_2016$Date)
+
+#check
+str(pageviews_06058_2016)
+
+```
+
+```{r load data multiple}
+
+#load all csv data from the folder into a list
+
+setwd("C:/Users/Benny/Desktop/Prediction-of-Surfing-Conditions")
+temp = list.files(pattern="*.csv")
+myfiles = lapply(temp, read.delim)
+
+rm(temp)
+
+```
+
+
+```{r change every column in mylist}
+
+#unfortunately every column in every dataset from the loaded list has a differet name
+#hence rbind doesn't work
+#therefore we need to rename those column names
+
+for (i in 1:length(myfiles)){
+  colnames(myfiles[[i]]) <- "lol"
+}
+
+
+
+
+```
+
+
+#------------------------------------
+
+
+Load the data one by one
+
+```{r load data multiple} 
+
+# site 1
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+pw_site_06058 <- myfiles[[1]]
+pw_site_06058 <- rbind(pw_site_06058, myfiles[[2]])
+pw_site_06058 <- rbind(pw_site_06058, myfiles[[3]])
+pw_site_06058 <- rbind(pw_site_06058, myfiles[[4]])
+
+pw_site_06058 <- separate(data = pw_site_06058, col = 1, into = c("Date", "Number"), sep = "\\;")
+
+colnames(pw_site_06058) <- c("Date", "Number")
+
+pw_site_06058$Date <-  ymd(pw_site_06058$Date)
+
+pw_site_06058$Site <- "06058"
+
+
+```
+
+
+```{r load data multiple}
+
+# site 2
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+pw_site_10028 <- myfiles[[5]]
+pw_site_10028 <- rbind(pw_site_10028, myfiles[[6]])
+pw_site_10028 <- rbind(pw_site_10028, myfiles[[7]])
+pw_site_10028 <- rbind(pw_site_10028, myfiles[[8]])
+
+pw_site_10028 <- separate(data = pw_site_10028, col = 1, into = c("Date", "Number"), sep = "\\;")
+
+colnames(pw_site_10028) <- c("Date", "Number")
+
+pw_site_10028$Date <-  ymd(pw_site_10028$Date)
+
+pw_site_10028$Site <- "10028"
+
+
+```
+
+
+```{r load data multiple}
+
+#site 3
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+pw_site_10044N <- myfiles[[9]]
+pw_site_10044N <- rbind(pw_site_10044N, myfiles[[10]])
+pw_site_10044N <- rbind(pw_site_10044N, myfiles[[11]])
+pw_site_10044N <- rbind(pw_site_10044N, myfiles[[12]])
+
+pw_site_10044N <- separate(data = pw_site_10044N, col = 1, into = c("Date", "Number"), sep = "\\;")
+
+colnames(pw_site_10044N) <- c("Date", "Number")
+
+pw_site_10044N$Date <-  ymd(pw_site_10044N$Date)
+
+pw_site_10044N$Site <- "10044N"
+
+
+```
+
+
+```{r load data multiple}
+
+#site 4
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+pw_site_10169 <- myfiles[[13]]
+pw_site_10169 <- rbind(pw_site_10169, myfiles[[14]])
+pw_site_10169 <- rbind(pw_site_10169, myfiles[[15]])
+pw_site_10169 <- rbind(pw_site_10169, myfiles[[16]])
+
+pw_site_10169 <- separate(data = pw_site_10169, col = 1, into = c("Date", "Number"), sep = "\\;")
+
+colnames(pw_site_10169) <- c("Date", "Number")
+
+pw_site_10169$Date <-  ymd(pw_site_10169$Date)
+
+pw_site_10169$Site <- "10169"
+
+
+```
+
+
+```{r load data multiple}
+
+#site 5
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+pw_site_eg3 <- myfiles[[17]]
+pw_site_eg3 <- rbind(pw_site_eg3, myfiles[[18]])
+pw_site_eg3 <- rbind(pw_site_eg3, myfiles[[19]])
+pw_site_eg3 <- rbind(pw_site_eg3, myfiles[[20]])
+
+pw_site_eg3 <- separate(data = pw_site_eg3, col = 1, into = c("Date", "Number"), sep = "\\;")
+
+colnames(pw_site_eg3) <- c("Date", "Number")
+
+pw_site_eg3$Date <-  ymd(pw_site_eg3$Date)
+
+pw_site_eg3$Site <- "eg3"
+
+
+```
+
+
+```{r load data multiple}
+
+#site 6
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+pw_site_nl22 <- myfiles[[21]]
+pw_site_nl22 <- rbind(pw_site_nl22, myfiles[[22]])
+pw_site_nl22 <- rbind(pw_site_nl22, myfiles[[23]])
+pw_site_nl22 <- rbind(pw_site_nl22, myfiles[[24]])
+
+pw_site_nl22 <- separate(data = pw_site_nl22, col = 1, into = c("Date", "Number"), sep = "\\;")
+
+colnames(pw_site_nl22) <- c("Date", "Number")
+
+pw_site_nl22$Date <-  ymd(pw_site_nl22$Date)
+
+pw_site_nl22$Site <- "nl22"
+
+
+```
+
+
+```{r load data multiple}
+
+#site 7
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+pw_site_us15 <- myfiles[[25]]
+pw_site_us15 <- rbind(pw_site_us15, myfiles[[26]])
+pw_site_us15 <- rbind(pw_site_us15, myfiles[[27]])
+pw_site_us15 <- rbind(pw_site_us15, myfiles[[28]])
+
+pw_site_us15 <- separate(data = pw_site_us15, col = 1, into = c("Date", "Number"), sep = "\\;")
+
+colnames(pw_site_us15) <- c("Date", "Number")
+
+pw_site_us15$Date <-  ymd(pw_site_us15$Date)
+
+pw_site_us15$Site <- "us15"
+
+
+```
+
+
+```{r bind pageview}
+
+pw_site <- rbind(pw_site_06058, pw_site_10028, pw_site_10044N, pw_site_10169, pw_site_eg3, pw_site_nl22, pw_site_us15)
+
+pw_site$Number <- as.numeric(pw_site$Number)
+
+
+```
+
+
+
+#-----------------------------------------------------
+
+Now we need to incorporate the wheather data
+
+
+```{r load data multiple}
+
+#site 1
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+wea_site_06058 <- myfiles[[30]]
+wea_site_06058 <- rbind(wea_site_06058, myfiles[[31]])
+wea_site_06058 <- rbind(wea_site_06058, myfiles[[32]])
+wea_site_06058 <- rbind(wea_site_06058, myfiles[[33]])
+
+wea_site_06058 <- separate(data = wea_site_06058, col = 1, into = c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature"), sep = "\\;")
+
+colnames(wea_site_06058) <- c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature")
+
+wea_site_06058$DateTime <-  ymd_hms(wea_site_06058$DateTime)
+
+wea_site_06058$Site <- "06058"
+
+#check
+#str(wea_site_06058)
+#i.O.
+
+```
+
+
+
+```{r load data multiple}
+
+#site 2
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+wea_site_10028 <- myfiles[[34]]
+wea_site_10028 <- rbind(wea_site_10028, myfiles[[35]])
+wea_site_10028 <- rbind(wea_site_10028, myfiles[[36]])
+wea_site_10028 <- rbind(wea_site_10028, myfiles[[37]])
+
+wea_site_10028 <- separate(data = wea_site_10028, col = 1, into = c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature"), sep = "\\;")
+
+colnames(wea_site_10028) <- c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature")
+
+wea_site_10028$DateTime <-  ymd_hms(wea_site_10028$DateTime)
+
+wea_site_10028$Site <- "10028"
+
+#check
+#str(wea_site_10028)
+#i.O.
+
+```
+
+
+```{r load data multiple}
+
+#site 3
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+wea_site_10044N <- myfiles[[38]]
+wea_site_10044N <- rbind(wea_site_10044N, myfiles[[39]])
+wea_site_10044N <- rbind(wea_site_10044N, myfiles[[40]])
+wea_site_10044N <- rbind(wea_site_10044N, myfiles[[41]])
+
+wea_site_10044N <- separate(data = wea_site_10044N, col = 1, into = c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature"), sep = "\\;")
+
+colnames(wea_site_10044N) <- c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature")
+
+wea_site_10044N$DateTime <-  ymd_hms(wea_site_10044N$DateTime)
+
+wea_site_10044N$Site <- "10044N"
+
+#check
+#str(wea_site_10044N)
+#i.O.
+
+```
+
+
+
+```{r load data multiple}
+
+#site 4
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+wea_site_10169 <- myfiles[[42]]
+wea_site_10169 <- rbind(wea_site_10169, myfiles[[43]])
+wea_site_10169 <- rbind(wea_site_10169, myfiles[[44]])
+wea_site_10169 <- rbind(wea_site_10169, myfiles[[45]])
+
+wea_site_10169 <- separate(data = wea_site_10169, col = 1, into = c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature"), sep = "\\;")
+
+colnames(wea_site_10169) <- c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature")
+
+wea_site_10169$DateTime <-  ymd_hms(wea_site_10169$DateTime)
+
+wea_site_10169$Site <- "10169"
+
+#check
+#str(wea_site_10169)
+#i.O.
+
+```
+
+
+```{r load data multiple}
+
+#site 5
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+wea_site_eg3 <- myfiles[[46]]
+wea_site_eg3 <- rbind(wea_site_eg3, myfiles[[47]])
+wea_site_eg3 <- rbind(wea_site_eg3, myfiles[[48]])
+wea_site_eg3 <- rbind(wea_site_eg3, myfiles[[49]])
+
+wea_site_eg3 <- separate(data = wea_site_eg3, col = 1, into = c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature"), sep = "\\;")
+
+colnames(wea_site_eg3) <- c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature")
+
+wea_site_eg3$DateTime <-  ymd_hms(wea_site_eg3$DateTime)
+
+wea_site_eg3$Site <- "eg3"
+
+#check
+#str(wea_site_eg3)
+#i.O.
+
+```
+
+
+```{r load data multiple}
+
+#site 6
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+wea_site_nl22 <- myfiles[[50]]
+wea_site_nl22 <- rbind(wea_site_nl22, myfiles[[51]])
+wea_site_nl22 <- rbind(wea_site_nl22, myfiles[[52]])
+wea_site_nl22 <- rbind(wea_site_nl22, myfiles[[53]])
+
+wea_site_nl22 <- separate(data = wea_site_nl22, col = 1, into = c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature"), sep = "\\;")
+
+colnames(wea_site_nl22) <- c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature")
+
+wea_site_nl22$DateTime <-  ymd_hms(wea_site_nl22$DateTime)
+
+wea_site_nl22$Site <- "nl22"
+
+#check
+#str(wea_site_nl22)
+#i.O.
+
+```
+
+
+```{r load data multiple}
+
+#site 7
+
+#split the list into something meaningful
+
+library(tidyr)
+
+
+  
+wea_site_us15 <- myfiles[[54]]
+wea_site_us15 <- rbind(wea_site_us15, myfiles[[55]])
+wea_site_us15 <- rbind(wea_site_us15, myfiles[[56]])
+wea_site_us15 <- rbind(wea_site_us15, myfiles[[57]])
+
+wea_site_us15 <- separate(data = wea_site_us15, col = 1, into = c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature"), sep = "\\;")
+
+colnames(wea_site_us15) <- c("DateTime", "Windspeed", "Winddirection", "Windgust", "Airtemperature")
+
+wea_site_us15$DateTime <-  ymd_hms(wea_site_us15$DateTime)
+
+wea_site_us15$Site <- "us15"
+
+#check
+#str(wea_site_us15)
+#i.O.
+
+```
+
+
+```{r bind weather}
+
+wea_site <- rbind(wea_site_06058, wea_site_10028, wea_site_10044N, wea_site_10169, wea_site_eg3, wea_site_nl22, wea_site_us15)
+
+wea_site$DateTime   <-  floor_date(wea_site$DateTime, unit="hours")
+
+#str(wea_site)
+
+
+```
+
+
+#------------------------------------
+
+Bind now the weather data and the pageview data together
+
+Since we only have a daily total for the pageview, one should also build a daily score for the other variables?
+Double rows are not so nice really, but would be okay, if we select just a certain time on the day or such.
+
+
+First try to remain in the ymd_hms strcture of wheather data and change the pageview accordingly.
+
+
+```{r bind weather and pageview}
+
+library(dplyr)
+
+pw_site$Date <- interval(pw_site$Date)
+
+#dplr <- left_join(df1, df2, by=c("id","dates"))
+
+```
+
+aggregate weather for one day
+
+
+```{r bind weather and pageview}
+
+wea_site %>% group_by(day = day(DateTime)) %>% summarise(wea_site[2:5] = mean(wea_site[2:5]))
+
+```
+
+
+#----------------------------------
+
+univariate time series analysis
+
+```{r create a timeseries for pageview}
+
+library(ggplot2)
+
+
+df <- pw_site[pw_site$Site == "06058", ]
+df <- df[df$Date < as.Date('2016-01-01') | df$Date < as.Date('2016-12-31') , ]
+
+#-----------------------------
+
+
+
+p<-ggplot(data = df, aes(x = Date, y = Number))+
+  geom_line(size = 0.01) +
+  xlab("")
+p
+
+
+#str(pw_site$Site)
+
+str(economics$date)
+str(df$Date)
+
+
+```
+
+```{r create a timeseries for pageview}
+
+library(ggplot2)
+
+
+df <- pw_site[pw_site$Site == "06058", ]
+df <- df[df$Date < as.Date('2016-01-01') | df$Date < as.Date('2016-12-31') , ]
+
+#-----------------------------
+
+
+p<-ggplot(data = df, aes(x = Date, y = Number))+
+  geom_line(size = 0.01) +
+  xlab("")
+p
+
+
+#str(pw_site$Site)
+
+str(economics$date)
+str(df$Date)
+
+
+```
+
+
+```{r}
+
+##library(tseries)
+par(mfrow=c(1,2)) #For two plot in one row and two columns
+##Fig.3 
+
+#Autocorrelation of series Number by lag
+p2<-acf(df$Number)
+
+#Partial autocorrelation of series Number by lag
+p3<-pacf(df$Number)
+
+
+```
+
+One can see the series has high autocorrelation and is thus non stationary. Also the lags seem to differ around the year.
+
+
+Let's try arima
+
+```{r}
+#install.packages("forecast")
+library(forecast)
+
+auto.arima(df$Number)
+
+```
+
+Works.
+
+
+So let's first look at seasonal effect
+
+```{r}
+
+df.season <- ts(df$Number, start=c(2016, 1), end=c(2019, 12), frequency=365) 
+seasonplot(df.season)
+
+```
+
+
+```{r}
+
+# Seasonal decomposition
+fit <- stl(df.season, s.window="period")
+plot(fit)
+
+```
+
+Another try with ARIMA
+
+```{r}
+library(forecast)
+
+arima <- auto.arima(df.season)
+
+```
+
+
+
+stationarity test
+```{r}
+
+library(tseries)
+kpss.test(df$Number)
+
+
+```
+
+Surprise, it's not stationary.
+
+
+Unit root test
+
+```{r}
+#install.packages("fUnitRoots")
+library(fUnitRoots)
+urkpssTest(df$Number, type = c("tau"), lags = c("short"),use.lag = NULL, doplot = TRUE)
+tsstationary = diff(df$Number, differences=1)
+plot(tsstationary)
+
+
+```
+
+
+
+Does simple differenceing help? That means calculating t-(t-1)
+
+```{r}
+
+library(xts)  #for apply.yearly
+
+str(df)
+
+test <- xts(x = df[,2], order.by = df$Date)
+#str(test) looks okay
+
+mean  <- apply.yearly(test, mean)
+test <- diff(test)
+kpss.test(test)
+
+
+```
+
+Let's check autocorrelation
+
+```{r}
+
+acf(df$Number,lag.max=34) 
+
+```
+
+```{r}
+
+tsstationary <- diff(df$Number, differences=2)
+plot(tsstationary)
+
+#---------------------
+
+tsstationary2 <- diff(tsstationary, lag = 12)
+plot(tsstationary2)
+
+
+
+```
+
+
+
+#----------------------------------------------
+
+https://ademos.people.uic.edu/Chapter23.html#7_the_auto-arima_function
+
+
+Determining frequency using Fourier transform
+
+```{r}
+
+#install.packages("TSA") #if needed
+library("TSA")
+
+PGram<-periodogram(df$Number)
+
+```
+
+
+```{r}
+
+PGramAsDataFrame = data.frame(freq=PGram$freq, spec=PGram$spec)
+order = PGramAsDataFrame[order(-PGramAsDataFrame$spec),]
+top2 = head(order, 4)
+top2  # display the 4 highest "power" frequencies
+
+
+```
+
+
+```{r}
+
+TimePeriod<-1/top2[2,1]
+TimePeriod 
+
+TimePeriod2<-1/top2[1,1]
+TimePeriod2
+
+TimePeriod3<-1/top2[3,1]
+TimePeriod3
+
+TimePeriod4<-1/top2[4,1]
+TimePeriod4
+
+```
+
+Decomposing data once we know the frequency
+
+```{r}
+
+#install.packages("tseries") #if needed
+library('tseries')
+
+dfNoFreq182 <- ts(df$Number, frequency=182.25)
+
+RDecomp<-decompose(dfNoFreq182)
+plot(RDecomp)
+
+```
+
+```{r}
+
+SineWavesDecomposed <- stl(dfNoFreq182, s.window="periodic")
+plot(SineWavesDecomposed)
+
+```
+
+Remove now the seasonal component
+
+```{r}
+
+#install.packages("forecast") #if needed
+library('forecast')
+
+SineWavesDecomposedSeasonalAdjusted <- seasadj(SineWavesDecomposed)
+plot(SineWavesDecomposedSeasonalAdjusted)
+
+
+```
+
+#---------------
+
+
+```{r}
+
+TwoSinesGoingUpExponentiallyFreq364 <- ts(SineWavesDecomposedSeasonalAdjusted, frequency=364)
+
+SineWavesDecomposed2 <- stl(TwoSinesGoingUpExponentiallyFreq364, s.window="periodic")
+
+plot(SineWavesDecomposed2)
+
+
+```
+
+
+```{r}
+
+SineWavesDecomposedSeasonalAdjusted2 <- seasadj(SineWavesDecomposed2)
+plot(SineWavesDecomposedSeasonalAdjusted2)
+
+```
+
+```{r}
+
+TwoSinesGoingUpExponentiallyFreq121 <- ts(SineWavesDecomposedSeasonalAdjusted, frequency=121)
+
+SineWavesDecomposed3 <- stl(TwoSinesGoingUpExponentiallyFreq121, s.window="periodic")
+
+plot(SineWavesDecomposed3)
+
+```
+
+```{r}
+
+SineWavesDecomposedSeasonalAdjusted3 <- seasadj(SineWavesDecomposed3)
+plot(SineWavesDecomposedSeasonalAdjusted3)
+
+```
+
+
+
+```{r}
+
+TwoSinesGoingUpExponentiallyFreq1458 <- ts(SineWavesDecomposedSeasonalAdjusted, frequency=1458)
+
+SineWavesDecomposed3 <- stl(TwoSinesGoingUpExponentiallyFreq1458, s.window="periodic")
+
+plot(SineWavesDecomposed4)
+
+```
+
+```{r}
+
+SineWavesDecomposedSeasonalAdjusted4 <- seasadj(SineWavesDecomposed4)
+plot(SineWavesDecomposedSeasonalAdjusted4)
+
+```
+
+Funktioniert leider nicht so gut, da die ursprüngliche Wellenfunktion vermutlich zu komplex ist, als dass das funktionieren könnte.
+
+
+#---------------------------------------------------------------------------------
+
+Let's look at weather data
+
+```{r}
+
+#str(wea_site)
+
+for (i in 2:5){
+  wea_site[,i] <- as.numeric(wea_site[,i])
+}
+
+```
+
+
+So let's first look at seasonal effect
+
+
+```{r}
+
+#If we want to limit the data
+
+df <- wea_site[wea_site$Site == "06058", ]
+#df <- df[df$Date < as.Date('2016-01-01') | df$Date < as.Date('2016-12-31') , ]
+
+```
+
+
+
+```{r}
+
+#there are 8481 entries for 2016
+
+df.season <- ts(df$Windspeed, start=c(2016, 1), end=c(2019, 12), frequency=8481) 
+seasonplot(df.season)
+
+```
+
+
+```{r}
+
+# Seasonal decomposition
+fit <- stl(df.season, s.window="period")
+plot(fit)
+
+```
+
+So this doesn't really tell us anything. Maybe it's best to use a Fourier transform analysis here.
+
+Determining frequency using Fourier transform doesn't work so well either, instead try using smoother
+
+
+
+
+```{r}
+
+#use triangular average to smooth
+
+p = 500 #rolling window
+#100 entries are 5 days
+
+
+test <- rollmean(rollmean(df$Windspeed,p),p)
+plot(test, cex = 0.1)
+
+
+```
+
+This is also not telling so much, there are more days consequently with the same windspeed, but this is due to the rolling average.
+
+If you want to measure windspeed stability, you must choose another method.
+
+If the wind today is 10, what is probability that the wind is at least half of it the next 5 days on average (simply percentage)
+
+```{r}
+
+library(ggplot2)
+
+#aggregate data over the day
+df.agg <- df %>% 
+  group_by(year = year(DateTime), month = month(DateTime), day = day(DateTime)) %>% 
+  summarise_if(is.numeric, mean)
+
+#add another column average windspeed of the next 5 days
+
+df.agg$WindspeedAv5days <- NA
+  
+for(i in 1:length(df.agg$Windspeed)){
+  df.agg$WindspeedAv5days[i] <- mean(df.agg$Windspeed[i:(i+5)])
+}
+
+#add another column to indicate if the average wind in the next 5 days is at least half the wind of today
+
+#first replace NAs
+#sum(is.na(df.agg$WindspeedAv5days)) #5 NA
+df.agg <- df.agg %>% dplyr::mutate(WindspeedAv5days = replace_na(WindspeedAv5days, 0))
+#now 0 NA
+
+df.agg$WindMinHalf5 <- NA
+  
+for(i in 1:length(df.agg$Windspeed)){
+  df.agg$WindMinHalf5[i] <- if(df.agg$WindspeedAv5days[i] > df.agg$Windspeed[i]/1.5){1}else{0}
+}
+
+mean(df.agg$WindMinHalf5)
+
+
+```
+
+In 92% aller Fälle beträgt der durchschnittliche Wind in den nächsten 5 Tagen noch dieselbe Windstärke wie am aktuellen Tag.
+
+
+
+
+```{r}
+
+library(gridExtra)
+
+df.agg$WindDiff <- NA
+  
+for(i in 1:length(df.agg$Windspeed)){
+  df.agg$WindDiff[i] <-  df.agg$Windspeed[i+1] - df.agg$Windspeed[i]
+}
+
+p1 <- ggplot(df.agg, aes(x=WindDiff)) + 
+  geom_histogram(binwidth=1)
+
+
+#--------------------------------------------
+
+df.agg$WindDiff2 <- NA
+  
+for(i in 1:length(df.agg$Windspeed)){
+  df.agg$WindDiff[i] <-  df.agg$Windspeed[i+2] - df.agg$Windspeed[i]
+}
+
+p2 <- ggplot(df.agg, aes(x=WindDiff)) + 
+  geom_histogram(binwidth=1)
+
+
+#--------------------------------------------
+
+df.agg$WindDiff3 <- NA
+  
+for(i in 1:length(df.agg$Windspeed)){
+  df.agg$WindDiff[i] <-  df.agg$Windspeed[i+3] - df.agg$Windspeed[i]
+}
+
+p3 <- ggplot(df.agg, aes(x=WindDiff)) + 
+  geom_histogram(binwidth=1)
+
+
+#--------------------------------------------
+
+#do the facet wrap
+
+p4 <- grid.arrange(p1, p2, p3, nrow = 3)
+
+
+```
+
+The histogram looks like Normal Distribution.
+
+
+#------------------------------
+
+```{r}
+
+str(wea_site_06058)
+
+for (i in 2:5){
+  wea_site_06058[,i] <- as.numeric(wea_site_06058[,i])
+  wea_site_10028[,i] <- as.numeric(wea_site_10028[,i])
+  wea_site_10044N[,i] <- as.numeric(wea_site_10044N[,i])
+  wea_site_10169[,i] <- as.numeric(wea_site_10169[,i])
+  wea_site_eg3[,i] <- as.numeric(wea_site_eg3[,i])
+  wea_site_nl22[,i] <- as.numeric(wea_site_nl22[,i])
+  wea_site_us15[,i] <- as.numeric(wea_site_us15[,i])
+}
+
+  pw_site_06058[,2] <- as.numeric(pw_site_06058[,2])
+  pw_site_10028[,2] <- as.numeric(pw_site_10028[,2])
+  pw_site_10044N[,2] <- as.numeric(pw_site_10044N[,2])
+  pw_site_10169[,2] <- as.numeric(pw_site_10169[,2])
+  pw_site_eg3[,2] <- as.numeric(pw_site_eg3[,2])
+  pw_site_nl22[,2] <- as.numeric(pw_site_nl22[,2])
+  pw_site_us15[,2] <- as.numeric(pw_site_us15[,2])
+
+
+```
+
+
+
+```{r}
+
+library(dplyr)
+library(lubridate)
+
+wea_site_06058.agg <- wea_site_06058 %>% 
+  group_by(year = year(DateTime), month = month(DateTime), day = day(DateTime)) %>% 
+  summarise_if(is.numeric, mean)
+
+wea_site_10028.agg <- wea_site_10028 %>% 
+  group_by(year = year(DateTime), month = month(DateTime), day = day(DateTime)) %>% 
+  summarise_if(is.numeric, mean)
+
+wea_site_10044N.agg <- wea_site_10044N %>% 
+  group_by(year = year(DateTime), month = month(DateTime), day = day(DateTime)) %>% 
+  summarise_if(is.numeric, mean)
+
+wea_site_10169.agg <- wea_site_10169 %>% 
+  group_by(year = year(DateTime), month = month(DateTime), day = day(DateTime)) %>% 
+  summarise_if(is.numeric, mean)
+
+wea_site_eg3.agg <- wea_site_eg3 %>% 
+  group_by(year = year(DateTime), month = month(DateTime), day = day(DateTime)) %>% 
+  summarise_if(is.numeric, mean)
+
+wea_site_nl22.agg <- wea_site_nl22 %>% 
+  group_by(year = year(DateTime), month = month(DateTime), day = day(DateTime)) %>% 
+  summarise_if(is.numeric, mean)
+
+wea_site_us15.agg <- wea_site_us15 %>% 
+  group_by(year = year(DateTime), month = month(DateTime), day = day(DateTime)) %>% 
+  summarise_if(is.numeric, mean)
+
+wea_site.agg <- rbind(wea_site_06058.agg, wea_site_10028.agg, wea_site_10044N.agg, wea_site_10169.agg, wea_site_eg3.agg, wea_site_nl22.agg, wea_site_us15.agg)
+
+```
+
+
+
+
+
+```{r}
+
+#site 1
+
+wea_site_06058.agg$date <- as.Date(with(wea_site_06058.agg, paste(year, month, day,sep="-")), "%Y-%m-%d")
+
+wea_site_06058.agg$date <- ymd(wea_site_06058.agg$date)
+
+
+pw_site_06058 <- as_tibble(pw_site_06058)
+
+str(pw_site_06058)
+str(wea_site_06058.agg)
+
+colnames(pw_site_06058)[1] <- "date" 
+
+
+site_06058 <- dplyr::left_join(wea_site_06058.agg, pw_site_06058, by = "date")
+
+
+c06058 <- cor(site_06058$Number, site_06058$Windspeed, use = "complete.obs")
+
+
+```
+
+
+
+```{r}
+
+#site 2
+
+
+wea_site_10028.agg$date <- as.Date(with(wea_site_10028.agg, paste(year, month, day,sep="-")), "%Y-%m-%d")
+
+wea_site_10028.agg$date <- ymd(wea_site_10028.agg$date)
+
+
+pw_site_10028 <- as_tibble(pw_site_10028)
+
+
+
+colnames(pw_site_10028)[1] <- "date" 
+
+
+site_10028 <- dplyr::left_join(wea_site_10028.agg, pw_site_10028, by = "date")
+
+
+c10028 <- cor(site_10028$Number, site_10028$Windspeed, use = "complete.obs")
+
+
+```
+
+
+```{r}
+
+#site 3
+
+wea_site_10044N.agg$date <- as.Date(with(wea_site_10044N.agg, paste(year, month, day,sep="-")), "%Y-%m-%d")
+
+wea_site_10044N.agg$date <- ymd(wea_site_10044N.agg$date)
+
+
+pw_site_10044N <- as_tibble(pw_site_10044N)
+
+
+
+colnames(pw_site_10044N)[1] <- "date" 
+
+
+site_10044N <- dplyr::left_join(wea_site_10044N.agg, pw_site_10044N, by = "date")
+
+
+c10044N <- cor(site_10044N$Number, site_10044N$Windspeed, use = "complete.obs")
+
+
+```
+
+
+```{r}
+
+#site 4
+
+wea_site_10169.agg$date <- as.Date(with(wea_site_10169.agg, paste(year, month, day,sep="-")), "%Y-%m-%d")
+
+wea_site_10169.agg$date <- ymd(wea_site_10169.agg$date)
+
+
+pw_site_10169 <- as_tibble(pw_site_10169)
+
+
+
+colnames(pw_site_10169)[1] <- "date" 
+
+
+site_10169 <- dplyr::left_join(wea_site_10169.agg, pw_site_10169, by = "date")
+
+
+c10169 <- cor(site_10169$Number, site_10169$Windspeed, use = "complete.obs")
+
+
+```
+
+```{r}
+
+#site 5
+
+wea_site_eg3.agg$date <- as.Date(with(wea_site_eg3.agg, paste(year, month, day,sep="-")), "%Y-%m-%d")
+
+wea_site_eg3.agg$date <- ymd(wea_site_eg3.agg$date)
+
+
+pw_site_eg3 <- as_tibble(pw_site_eg3)
+
+
+
+colnames(pw_site_eg3)[1] <- "date" 
+
+
+site_eg3 <- dplyr::left_join(wea_site_eg3.agg, pw_site_eg3, by = "date")
+
+
+ceg3 <- cor(site_eg3$Number, site_eg3$Windspeed, use = "complete.obs")
+
+
+```
+
+```{r}
+
+#site 6
+
+wea_site_nl22.agg$date <- as.Date(with(wea_site_nl22.agg, paste(year, month, day,sep="-")), "%Y-%m-%d")
+
+wea_site_nl22.agg$date <- ymd(wea_site_nl22.agg$date)
+
+
+pw_site_nl22 <- as_tibble(pw_site_nl22)
+
+
+
+colnames(pw_site_nl22)[1] <- "date" 
+
+
+site_nl22 <- dplyr::left_join(wea_site_nl22.agg, pw_site_nl22, by = "date")
+
+
+cnl22 <- cor(site_nl22$Number, site_nl22$Windspeed, use = "complete.obs")
+
+
+```
+
+```{r}
+
+#site 7
+
+wea_site_us15.agg$date <- as.Date(with(wea_site_us15.agg, paste(year, month, day,sep="-")), "%Y-%m-%d")
+
+wea_site_us15.agg$date <- ymd(wea_site_us15.agg$date)
+
+
+pw_site_us15 <- as_tibble(pw_site_us15)
+
+
+
+colnames(pw_site_us15)[1] <- "date" 
+
+
+site_us15 <- dplyr::left_join(wea_site_us15.agg, pw_site_us15, by = "date")
+
+
+cus15 <- cor(site_us15$Number, site_us15$Windspeed, use = "complete.obs")
+
+
+```
+
+
+Make a plot of these points
+
+```{r}
+
+library(ggplot2)
+
+#make a vector of correlations and spots
+
+corr_site <- c(c06058, c10028, c10044N, c10169, cnl22, c10169, ceg3, cus15)
+
+site_names <- c("Hvide Sande", "St. Peter Ording", "Kiel Leuchtturm", "Warnemünde", "Renesse-West", "Port Said Airport", "Molasses Reef")
+
+test <- cbind(corr_site, site_names)
+
+CorrWindView  <- as.data.frame(test)
+
+#str(CorrWindView )
+
+CorrWindView$corr_site <- as.numeric(CorrWindView$corr_site)
+
+CorrWindView <- CorrWindView[order(CorrWindView[,1],decreasing=TRUE),]
+
+rownames(CorrWindView) <- 1:8
+
+ggplot(CorrWindView, aes(x= site_names , y= corr_site)) +
+  geom_bar(stat = "identity") +
+  coord_flip()+
+  xlab("")+
+  ylab("pos. corr. wind speed & pageviews")
+
+```
