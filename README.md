@@ -5,9 +5,15 @@ Project from Windfinder.
 
 ## Setup
 
+### Virtual Environment
+
 ```shell
 pip install -r requirements.txt
 ```
+
+### Data Sets
+
+
 
 ## Content
 ### `notebooks`
