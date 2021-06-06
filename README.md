@@ -3,6 +3,11 @@
 
 Project from Windfinder.
 
+## Setup
+
+```shell
+pip install -r requirements.txt
+```
 
 ## Content
 ### `notebooks`
